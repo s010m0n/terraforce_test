@@ -2,29 +2,38 @@
 
 namespace App\Http\Controllers\Post;
 
+use App\Contracts\Services\PostServiceContract;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Post\PostStoreRequest;
+use App\Http\Requests\Post\PostUpdateRequest;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    public function __construct(private PostServiceContract $postService)
+    {
+    }
+
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
-        //
+        $posts = $this->postService->getAllPosts(auth()->id(),12,false);
+
+        return view('post.index',[
+           'posts' => $posts
+        ]);
     }
 
+
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function create()
     {
-        //
+        return view('post.create');
     }
 
     /**
@@ -33,31 +42,37 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostStoreRequest $request)
     {
-        //
+        $this->postService->createOrUpdate(false, $request->validated());
     }
 
+
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show($id)
     {
-        //
+        $post = $this->postService->getPost($id);
+
+        return view('post.show',[
+           'post' => $post
+        ]);
     }
 
+
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function edit($id)
+    public function edit(int $id)
     {
-        //
+        $post = $this->postService->getPost($id);
+
+        return view('post.edit', [
+            'post' => $post
+        ]);
     }
 
     /**
@@ -67,9 +82,11 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PostUpdateRequest $request, $id)
     {
-        //
+        $this->postService->createOrUpdate($id, $request->validated());
+
+        return view('post.index');
     }
 
     /**
@@ -80,6 +97,8 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->postService->deletePost($id);
+
+        return view('post.index');
     }
 }
