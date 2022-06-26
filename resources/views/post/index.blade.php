@@ -1,51 +1,50 @@
-
-
-
-
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('dd') }}
-        </h2>
+        <div class="flex space-x-2 justify-between">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Posts') }}
+            </h2>
+            <a href="{{route('post.create')}}" type="button" class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">Add post</a>
+        </div>
     </x-slot>
 
+<div class="container py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="flex flex-col">
+        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+                <div class="overflow-hidden">
+                    <table class="min-w-full">
+                        <thead class="bg-white border-b">
+                        <tr>
+                            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                #
+                            </th>
+                            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                Title
+                            </th>
+                            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                Description
+                            </th>
 
-
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    You're logged in!
+                            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-right">
+                                Edit
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($posts as $post)
+                            @include('post.components.item')
+                        @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-
-
-    <div class="max-w-2xl px-8 py-4 mx-auto bg-white rounded-lg shadow-md dark:bg-gray-800">
-        <div class="flex items-center justify-between">
-            <span class="text-sm font-light text-gray-600 dark:text-gray-400">Mar 10, 2019</span>
-            <a class="px-3 py-1 text-sm font-bold text-gray-100 transition-colors duration-200 transform bg-gray-600 rounded cursor-pointer hover:bg-gray-500">Design</a>
-        </div>
-
-        <div class="mt-2">
-            <a href="#" class="text-2xl font-bold text-gray-700 dark:text-white hover:text-gray-600 dark:hover:text-gray-200 hover:underline">Accessibility tools for designers and developers</a>
-            <p class="mt-2 text-gray-600 dark:text-gray-300">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tempora expedita dicta totam aspernatur doloremque. Excepturi iste iusto eos enim reprehenderit nisi, accusamus delectus nihil quis facere in modi ratione libero!</p>
-        </div>
-
-        <div class="flex items-center justify-between mt-4">
-            <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">Read more</a>
-
-            <div class="flex items-center">
-                <img class="hidden object-cover w-10 h-10 mx-4 rounded-full sm:block" src="https://images.unsplash.com/photo-1502980426475-b83966705988?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=40&q=80" alt="avatar">
-                <a class="font-bold text-gray-700 cursor-pointer dark:text-gray-200">Khatab wedaa</a>
-            </div>
-        </div>
+    <div class="flex justify-center">
+        {{ $posts->links('pagination::tailwind') }}
     </div>
-
-
-
+</div>
 
 
 

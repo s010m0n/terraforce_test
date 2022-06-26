@@ -15,13 +15,13 @@ use App\Http\Controllers\Post\PostController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect(\route('post.index'));
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return redirect(\route('post.index'));
 })->middleware(['auth'])->name('dashboard');
 
-Route::resource('post','App\Http\Controllers\Post\PostController')->middleware(['auth']);
+Route::resource('post',PostController::class)->middleware(['auth']);
 
 require __DIR__.'/auth.php';

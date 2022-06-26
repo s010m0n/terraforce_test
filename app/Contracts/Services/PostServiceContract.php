@@ -8,7 +8,7 @@ interface PostServiceContract
 
     public function getPost(int $id);
 
-    public function createOrUpdate(bool|int $post = false, array $request);
+    public function createOrUpdate(array $request, bool|int $post = false);
 
     public function deletePost(int $id);
 

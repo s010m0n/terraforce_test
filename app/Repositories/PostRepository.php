@@ -8,6 +8,12 @@ use App\Models\Post;
 class PostRepository implements PostRepositoryContract
 {
 
+    /**
+     * @param bool|int $user
+     * @param bool|int $paginate
+     * @param bool|int $limit
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
     public function getAll(bool|int $user = false, bool|int $paginate = false, bool|int $limit = false)
     {
         $posts = Post::query();
@@ -28,26 +34,42 @@ class PostRepository implements PostRepositoryContract
         return $posts;
     }
 
+    /**
+     * @param int $id
+     * @return mixed
+     */
     public function find(int $id)
     {
         return Post::find($id);
     }
 
-    public function createOrUpdate(bool|int $post = false, array $request)
+    /**
+     * @param array $request
+     * @param bool|int $post
+     * @return void
+     */
+    public function createOrUpdate(array $request, bool|int $post = false)
     {
         $post = $this->find($post);
 
         if ($post !== null){
           $post->update([
-
+              'title' => $request['title'],
+              'description' => $request['description']
           ]);
         } else {
             $post = Post::create([
-
+                'user_id' => auth()->id(),
+                'title' => $request['title'],
+                'description' => $request['description']
             ]);
         }
     }
 
+    /**
+     * @param int $id
+     * @return void
+     */
     public function delete(int $id)
     {
         $post = $this->find($id);

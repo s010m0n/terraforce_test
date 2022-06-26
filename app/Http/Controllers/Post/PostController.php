@@ -36,15 +36,16 @@ class PostController extends Controller
         return view('post.create');
     }
 
+
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param PostStoreRequest $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(PostStoreRequest $request)
     {
-        $this->postService->createOrUpdate(false, $request->validated());
+        $this->postService->createOrUpdate($request->validated(), false );
+
+        return redirect(route('post.index'));
     }
 
 
@@ -75,30 +76,28 @@ class PostController extends Controller
         ]);
     }
 
+
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param PostUpdateRequest $request
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function update(PostUpdateRequest $request, $id)
     {
-        $this->postService->createOrUpdate($id, $request->validated());
+        $this->postService->createOrUpdate($request->validated(), $id);
 
-        return view('post.index');
+        return redirect(route('post.index'));
     }
 
+
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function destroy($id)
     {
         $this->postService->deletePost($id);
 
-        return view('post.index');
+        return redirect(route('post.index'));
     }
 }
