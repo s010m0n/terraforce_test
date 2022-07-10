@@ -12,6 +12,7 @@ class PostController extends Controller
 {
     public function __construct(private PostServiceContract $postService)
     {
+
     }
 
 
